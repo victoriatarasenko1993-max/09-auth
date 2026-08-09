@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { api } from "../../api";
-import { parseSetCookie } from "cookie";
+import { parse } from "cookie";
 import { isAxiosError } from "axios";
 import { logErrorResponse } from "../../_utils/utils";
 
@@ -27,18 +27,18 @@ export async function GET() {
       if (setCookie) {
         const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
         for (const cookieStr of cookieArray) {
-          const parsed = parseSetCookie(cookieStr);
+          const parsed = parse(cookieStr);
 
           const options = {
-            expires: parsed.expires ? new Date(parsed.expires) : undefined,
-            path: parsed.path,
-            maxAge: parsed.maxAge,
+            expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
+            path: parsed.Path,
+            maxAge: Number(parsed["Max-Age"]),
           };
 
-          if (parsed.name === "accessToken" && parsed.value)
-            cookieStore.set("accessToken", parsed.value, options);
-          if (parsed.name === "refreshToken" && parsed.value)
-            cookieStore.set("refreshToken", parsed.value, options);
+          if (parsed.accessToken)
+            cookieStore.set("accessToken", parsed.accessToken, options);
+          if (parsed.refreshToken)
+            cookieStore.set("refreshToken", parsed.refreshToken, options);
         }
         return NextResponse.json({ success: true }, { status: 200 });
       }
