@@ -9,13 +9,4 @@ export interface Note {
   updatedAt: string;
 }
 
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
-
-export interface CreateNoteData {
-  title: string;
-  content: string;
-  tag: NoteTag;
-}
+export type CreateNoteData = Pick<Note, 'title' | 'content' | 'tag'>;

@@ -25,15 +25,19 @@ export default function Pagination({
     }
   };
 
+  if (totalPages <= 1) {
+    return null;
+  }
+
   return (
     <div className={css.pagination}>
       <button
-        type="button"
         className={css.button}
         onClick={handlePrev}
         disabled={page === 1}
+        type="button"
       >
-        Previous
+        Prev
       </button>
 
       <span className={css.text}>
@@ -41,10 +45,10 @@ export default function Pagination({
       </span>
 
       <button
-        type="button"
         className={css.button}
         onClick={handleNext}
         disabled={page === totalPages}
+        type="button"
       >
         Next
       </button>
